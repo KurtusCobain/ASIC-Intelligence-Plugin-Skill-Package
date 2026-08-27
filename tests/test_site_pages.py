@@ -29,6 +29,15 @@ class VisitorFacingSitePagesTests(unittest.TestCase):
                 self.assertIn('ASIC Intelligence', html)
                 self.assertIn('austin@wnclogiclab.com', html)
 
+    def test_visitor_pages_keep_mobile_navigation_available(self):
+        for filename in VISITOR_PAGES:
+            with self.subTest(page=filename):
+                html = (DOCS / filename).read_text(encoding="utf-8")
+                self.assertIn('<script defer src="app.js"></script>', html)
+                self.assertIn('class="menu-button"', html)
+                self.assertIn('aria-controls="site-nav"', html)
+                self.assertIn('id="site-nav"', html)
+
     def test_homepage_routes_visitors_to_html_not_markdown(self):
         html = (DOCS / "index.html").read_text(encoding="utf-8")
         expected = [
