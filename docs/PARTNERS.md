@@ -28,3 +28,8 @@ Funding does not buy favorable diagnostic conclusions, unsafe equipment-control 
 ## Contact
 
 Start through the repository with a non-confidential description of the opportunity. Do not put private credentials, wallets, production network diagrams, employee information, or customer-identifying data in a public issue.
+
+
+## Private contact
+
+For non-public partnership, sponsorship, pilot, or integration discussions, email **[austin@wnclogiclab.com](mailto:austin@wnclogiclab.com)**. Do not include credentials or unsanitized production evidence in the first message.

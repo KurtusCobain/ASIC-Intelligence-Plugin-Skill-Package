@@ -5,9 +5,9 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 REQUIRED = [
-    'README.md','LICENSE','CHANGELOG.md','SECURITY.md','CONTRIBUTING.md','CODE_OF_CONDUCT.md',
+    'README.md','LICENSE','CHANGELOG.md','SHA256SUMS','SECURITY.md','CONTRIBUTING.md','CODE_OF_CONDUCT.md',
     '.github/FUNDING.yml','.github/workflows/verify.yml','.github/workflows/pages.yml',
-    'docs/index.html','docs/styles.css','docs/app.js','docs/404.html','docs/robots.txt','docs/.nojekyll','docs/assets/icon.svg',
+    'docs/index.html','docs/styles.css','docs/app.js','docs/404.html','docs/robots.txt','docs/.nojekyll','docs/assets/icon.svg','docs/assets/social-card.png',
     'docs/INSTALL-CODEX.md','docs/INSTALL-CLAUDE.md','docs/INSTALL-AGENT-SKILL.md','docs/SAFETY.md','docs/FAQ.md','docs/FUNDING.md','docs/PARTNERS.md','docs/BENCHMARKS.md',
     'distributions/codex/bitcoin-mining-troubleshooter-codex-v1.1.0.zip',
     'distributions/claude/bitcoin-mining-troubleshooter-claude-v1.1.0.zip',
@@ -122,6 +122,9 @@ def verify_repo(root:Path):
         html=(root/'docs/index.html').read_text(encoding='utf-8')
         for s in ('Try a fleet-scale demo','Install for Codex','Install for Claude','Founding Design Partner','Use it. Integrate it. Fund it.'):
             if s not in html:errors.append(f'site-missing:{s}')
+        if 'href="../demos/' in html or 'href="../distributions/' in html:errors.append('site-pages-relative-download-link')
+        for s in ('21,470','Illustrative diagnostic example','NOT PART OF v1.1.0','mailto:austin@wnclogiclab.com','og:title','og:description','og:image','canonical'):
+            if s not in html:errors.append(f'site-release-missing:{s}')
     if (root/'.github/FUNDING.yml').is_file() and 'KurtusCobain' not in (root/'.github/FUNDING.yml').read_text():errors.append('funding-maintainer-missing')
     pages=root/'.github/workflows/pages.yml'
     if pages.is_file():

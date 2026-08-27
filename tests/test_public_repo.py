@@ -114,6 +114,46 @@ class PublicRepoContentTests(unittest.TestCase):
         })
         self.assertEqual(sum(counts.values()), 21470)
 
+
+    def test_site_uses_pages_safe_repo_links_and_private_contact(self):
+        html = self._read('docs/index.html')
+        self.assertNotIn('href="../demos/', html)
+        self.assertNotIn('href="../distributions/', html)
+        self.assertIn('https://github.com/KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package/raw/main/demos/', html)
+        self.assertIn('https://github.com/KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package/raw/main/distributions/', html)
+        self.assertIn('mailto:austin@wnclogiclab.com', html)
+
+    def test_site_has_unambiguous_validation_status_and_social_metadata(self):
+        html = self._read('docs/index.html')
+        self.assertIn('Illustrative diagnostic example', html)
+        self.assertIn('21,470', html)
+        self.assertIn('NOT PART OF v1.1.0', html)
+        for phrase in ['og:title', 'og:description', 'og:image', 'canonical']:
+            self.assertIn(phrase, html)
+
+    def test_distribution_packages_use_asic_intelligence_identity(self):
+        import zipfile
+        checks = {
+            'distributions/codex/bitcoin-mining-troubleshooter-codex-v1.1.0.zip': '.codex-plugin/plugin.json',
+            'distributions/claude/bitcoin-mining-troubleshooter-claude-v1.1.0.zip': '.claude-plugin/plugin.json',
+            'distributions/agent-skill/bitcoin-mining-troubleshooter-agent-skill-v1.1.0.zip': 'SKILL.md',
+        }
+        for rel, suffix in checks.items():
+            with zipfile.ZipFile(ROOT / rel) as zf:
+                member = next(n for n in zf.namelist() if n.endswith(suffix))
+                text = zf.read(member).decode('utf-8')
+                self.assertIn('ASIC Intelligence', text, rel)
+                self.assertNotIn('wnclogiclab.com/products/bitcoin-mining-troubleshooter', text, rel)
+
+    def test_release_has_checksums(self):
+        sums = self._read('SHA256SUMS')
+        for name in [
+            'bitcoin-mining-troubleshooter-codex-v1.1.0.zip',
+            'bitcoin-mining-troubleshooter-claude-v1.1.0.zip',
+            'bitcoin-mining-troubleshooter-agent-skill-v1.1.0.zip',
+        ]:
+            self.assertIn(name, sums)
+
     def test_public_verifier_passes(self):
         verifier = ROOT / 'tools' / 'verify_public_repo.py'
         self.assertTrue(verifier.is_file(), 'public verifier missing')

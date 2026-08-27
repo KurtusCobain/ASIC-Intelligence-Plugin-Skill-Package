@@ -40,3 +40,8 @@ Recognition is optional. A supporter may be listed in [`SPONSORS.md`](../SPONSOR
 ## Start a conversation
 
 Use the GitHub repository for initial contact without posting confidential site information. For private commercial discussions, establish a private channel before sharing credentials, production logs, network maps, customer information, or other sensitive evidence.
+
+
+## Private contact
+
+For non-public partnership, sponsorship, pilot, or integration discussions, email **[austin@wnclogiclab.com](mailto:austin@wnclogiclab.com)**. Do not include credentials or unsanitized production evidence in the first message.

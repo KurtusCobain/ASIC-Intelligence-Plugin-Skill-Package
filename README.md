@@ -67,13 +67,13 @@ The public repository does **not** contain the proprietary ASIC Intelligence com
 **Integrate it** — vendors and tool builders can help validate public evidence formats and compatibility.  
 **Fund it** — sponsors and mining-industry design partners can support continued public work or separate ASIC Intelligence development.
 
-Read [Funding](docs/FUNDING.md) and [Partners](docs/PARTNERS.md).
+Read [Funding](docs/FUNDING.md) and [Partners](docs/PARTNERS.md). For private partnership discussions: **[austin@wnclogiclab.com](mailto:austin@wnclogiclab.com)**.
 
 ## Safety and privacy
 
 The package is diagnostic decision support, not equipment control. Operational evidence can contain wallet addresses, pool credentials, tokens, public IPs, employee names, serial numbers, internal DNS names, and facility identifiers. Avoid posting unsanitized operational evidence to public issues.
 
-See [Safety and scope](docs/SAFETY.md), [Security](SECURITY.md), and [FAQ](docs/FAQ.md).
+See [Safety and scope](docs/SAFETY.md), [Security](SECURITY.md), [FAQ](docs/FAQ.md), and verify downloads with [SHA256SUMS](SHA256SUMS).
 
 ## Website
 
@@ -81,7 +81,7 @@ The GitHub Pages website is served from [`docs/`](docs/) after public launch.
 
 ## Version
 
-Current staged public package: **v1.1.0**
+Current release: **v1.1.0**
 
 ## License
 
