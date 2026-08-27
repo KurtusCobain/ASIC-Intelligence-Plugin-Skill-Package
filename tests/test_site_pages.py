@@ -72,18 +72,26 @@ class VisitorFacingSitePagesTests(unittest.TestCase):
         missing = [name for name in expected_sources if not (DOCS / name).is_file()]
         self.assertEqual(missing, [], f"technical markdown source docs were removed: {missing}")
 
-    def test_all_public_html_pages_include_ga4_measurement(self):
+    def test_all_public_html_pages_load_shared_site_script(self):
         pages = sorted(DOCS.glob("*.html"))
         self.assertTrue(pages, "no public HTML pages found")
-
-        loader = f"https://www.googletagmanager.com/gtag/js?id={GA4_MEASUREMENT_ID}"
-        config = f"gtag('config', '{GA4_MEASUREMENT_ID}');"
-
         for path in pages:
             with self.subTest(page=path.name):
                 html = path.read_text(encoding="utf-8")
-                self.assertEqual(html.count(loader), 1, f"{path.name} must load GA4 exactly once")
-                self.assertEqual(html.count(config), 1, f"{path.name} must configure GA4 exactly once")
+                self.assertEqual(
+                    html.count('src="app.js"'),
+                    1,
+                    f"{path.name} must load the shared site script exactly once",
+                )
+
+    def test_shared_site_script_initializes_ga4_once(self):
+        javascript = (DOCS / "app.js").read_text(encoding="utf-8")
+        loader = f"https://www.googletagmanager.com/gtag/js?id={GA4_MEASUREMENT_ID}"
+        self.assertEqual(javascript.count(GA4_MEASUREMENT_ID), 2)
+        self.assertEqual(javascript.count(loader), 1)
+        self.assertIn("window.dataLayer = window.dataLayer || [];", javascript)
+        self.assertIn("gtag('js', new Date());", javascript)
+        self.assertIn(f"gtag('config', GA4_MEASUREMENT_ID);", javascript)
 
 
 if __name__ == "__main__":
