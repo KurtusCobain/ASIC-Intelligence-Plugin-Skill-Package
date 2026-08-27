@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 REQUIRED = [
-    'README.md','LICENSE','CHANGELOG.md','SHA256SUMS','SECURITY.md','CONTRIBUTING.md','CODE_OF_CONDUCT.md',
+    'README.md','LICENSE','NOTICE','CHANGELOG.md','SHA256SUMS','SECURITY.md','CONTRIBUTING.md','CODE_OF_CONDUCT.md',
     '.github/FUNDING.yml','.github/workflows/verify.yml','.github/workflows/pages.yml',
     'docs/index.html','docs/styles.css','docs/app.js','docs/404.html','docs/robots.txt','docs/.nojekyll','docs/assets/icon.svg','docs/assets/social-card.png',
     'docs/INSTALL-CODEX.md','docs/INSTALL-CLAUDE.md','docs/INSTALL-AGENT-SKILL.md','docs/SAFETY.md','docs/FAQ.md','docs/FUNDING.md','docs/PARTNERS.md','docs/BENCHMARKS.md',
@@ -46,9 +46,18 @@ def _zip_errors(path:Path):
         with zipfile.ZipFile(path) as zf:
             bad=zf.testzip()
             if bad: errs.append(f'bad-zip-member:{path.name}:{bad}')
+            names=[m.filename for m in zf.infolist()]
             for m in zf.infolist():
                 low=m.filename.lower()
                 if any(x in low for x in FORBIDDEN_PATH_FRAGMENTS):errs.append(f'forbidden-zip-path:{path.name}:{m.filename}')
+            license_names=[n for n in names if n.endswith('/LICENSE')]
+            notice_names=[n for n in names if n.endswith('/NOTICE')]
+            if len(license_names)!=1:errs.append(f'zip-license-count:{path.name}:{len(license_names)}')
+            elif not zf.read(license_names[0]).decode('utf-8','replace').startswith('# PolyForm Shield License 1.0.0'):
+                errs.append(f'zip-license-not-shield:{path.name}')
+            if len(notice_names)!=1:errs.append(f'zip-notice-count:{path.name}:{len(notice_names)}')
+            elif 'Required Notice:' not in zf.read(notice_names[0]).decode('utf-8','replace'):
+                errs.append(f'zip-required-notice-missing:{path.name}')
     except zipfile.BadZipFile:errs.append(f'invalid-zip:{path.name}')
     return errs
 
@@ -113,6 +122,15 @@ def verify_repo(root:Path):
             for hit in _phrase_hits(text):errors.append(f'forbidden-private-phrase:{p.relative_to(root)}:{hit}')
             old_repo='KurtusCobain/'+'bitcoin-mining-troubleshooter'
             if old_repo in text:errors.append(f'outdated-repo-url:{p.relative_to(root)}')
+    license_path=root/'LICENSE'
+    notice_path=root/'NOTICE'
+    if license_path.is_file():
+        license_text=license_path.read_text(encoding='utf-8')
+        if not license_text.startswith('# PolyForm Shield License 1.0.0'):errors.append('license-not-polyform-shield-1.0.0')
+        if '## Noncompete' not in license_text:errors.append('license-noncompete-section-missing')
+        if 'MIT License' in license_text:errors.append('stale-mit-license')
+    if notice_path.is_file() and 'Required Notice:' not in notice_path.read_text(encoding='utf-8'):
+        errors.append('required-notice-missing')
     if (root/'README.md').is_file():
         readme=(root/'README.md').read_text(encoding='utf-8')
         for s in ('ASIC Intelligence Plugin/Skill Package','Bitcoin Mining Troubleshooter','Powered by ASIC Intelligence','Use it. Integrate it. Fund it.'):
@@ -139,7 +157,7 @@ def main():
         print('PUBLIC REPO: FAIL');[print('-',e) for e in errors];return 1
     print('PUBLIC REPO: PASS')
     print('- required public files and v1.1.0 artifacts present')
-    print('- distribution ZIP integrity checks pass')
+    print('- distribution ZIP integrity and PolyForm Shield license checks pass')
     print('- public/private path and phrase guards clean')
     print(f'- synthetic primary-record scale: {_demo_count(root):,}')
     print('- GitHub Pages and funding configuration present')

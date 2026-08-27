@@ -45,3 +45,7 @@ Use the GitHub repository for initial contact without posting confidential site 
 ## Private contact
 
 For non-public partnership, sponsorship, pilot, or integration discussions, email **[austin@wnclogiclab.com](mailto:austin@wnclogiclab.com)**. Do not include credentials or unsanitized production evidence in the first message.
+
+## Licensing
+
+The public Plugin/Skill Package is source-available under the **PolyForm Shield License 1.0.0**. Separate commercial licensing can be discussed at **[austin@wnclogiclab.com](mailto:austin@wnclogiclab.com)**.

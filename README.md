@@ -85,4 +85,4 @@ Current release: **v1.1.0**
 
 ## License
 
-MIT. The license covers the material published in this repository; it does not grant rights to separately developed private products, systems, customer data, or trademarks.
+This repository is **source-available under the PolyForm Shield License 1.0.0**. The license permits use, modification, and redistribution for permitted purposes, but does not permit using the software to provide a product that competes with this software or other products the licensor or its affiliates provide using it. See [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE) for the controlling terms. Separately developed private ASIC Intelligence products, systems, customer data, and trademarks are not licensed by this repository. For commercial licensing or partnership questions, contact **[austin@wnclogiclab.com](mailto:austin@wnclogiclab.com)**.

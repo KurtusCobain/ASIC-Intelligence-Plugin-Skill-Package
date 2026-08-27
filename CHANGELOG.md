@@ -2,6 +2,7 @@
 
 ## v1.1.0 — 2026-08-27
 
+- Changed the public package license from MIT to **PolyForm Shield License 1.0.0** and added required license notices to all distribution archives.
 - Added Codex, Claude Code, and portable Agent Skill packages.
 - Added five synthetic fleet-scale demo scenarios covering more than 20,000 miner/evidence records.
 - Added explicit Unknown-value handling, unit preservation, denominator transparency, scanner-success semantics, and sentinel-telemetry caution.

@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class PublicRepoShapeTests(unittest.TestCase):
     def test_required_surface_exists(self):
         required = [
-            'README.md', 'LICENSE', 'CHANGELOG.md', 'SECURITY.md', 'CONTRIBUTING.md', 'CODE_OF_CONDUCT.md',
+            'README.md', 'LICENSE', 'NOTICE', 'CHANGELOG.md', 'SECURITY.md', 'CONTRIBUTING.md', 'CODE_OF_CONDUCT.md',
             '.github/FUNDING.yml', '.github/workflows/verify.yml', '.github/workflows/pages.yml',
             'docs/index.html', 'docs/styles.css', 'docs/app.js', 'docs/assets/icon.svg',
             'docs/INSTALL-CODEX.md', 'docs/INSTALL-CLAUDE.md', 'docs/INSTALL-AGENT-SKILL.md',
@@ -153,6 +153,41 @@ class PublicRepoContentTests(unittest.TestCase):
             'bitcoin-mining-troubleshooter-agent-skill-v1.1.0.zip',
         ]:
             self.assertIn(name, sums)
+
+    def test_license_is_polyform_shield(self):
+        license_text = self._read('LICENSE')
+        notice = self._read('NOTICE')
+        self.assertTrue(license_text.startswith('# PolyForm Shield License 1.0.0'))
+        self.assertIn('https://polyformproject.org/licenses/shield/1.0.0', license_text)
+        self.assertIn('## Noncompete', license_text)
+        self.assertNotIn('MIT License', license_text)
+        self.assertIn('Required Notice:', notice)
+        readme = self._read('README.md')
+        self.assertIn('PolyForm Shield License 1.0.0', readme)
+        self.assertIn('source-available', readme.lower())
+        site = self._read('docs/index.html')
+        self.assertIn('PolyForm Shield License 1.0.0', site)
+        self.assertIn('mailto:austin@wnclogiclab.com', site)
+
+    def test_distribution_archives_carry_license_and_notice(self):
+        import zipfile
+        archives = [
+            ROOT / 'distributions/codex/bitcoin-mining-troubleshooter-codex-v1.1.0.zip',
+            ROOT / 'distributions/claude/bitcoin-mining-troubleshooter-claude-v1.1.0.zip',
+            ROOT / 'distributions/agent-skill/bitcoin-mining-troubleshooter-agent-skill-v1.1.0.zip',
+        ]
+        for archive in archives:
+            with self.subTest(archive=archive.name), zipfile.ZipFile(archive) as zf:
+                names = zf.namelist()
+                license_names = [n for n in names if n.endswith('/LICENSE')]
+                notice_names = [n for n in names if n.endswith('/NOTICE')]
+                self.assertEqual(len(license_names), 1)
+                self.assertEqual(len(notice_names), 1)
+                license_text = zf.read(license_names[0]).decode('utf-8')
+                notice = zf.read(notice_names[0]).decode('utf-8')
+                self.assertTrue(license_text.startswith('# PolyForm Shield License 1.0.0'))
+                self.assertIn('## Noncompete', license_text)
+                self.assertIn('Required Notice:', notice)
 
     def test_public_verifier_passes(self):
         verifier = ROOT / 'tools' / 'verify_public_repo.py'

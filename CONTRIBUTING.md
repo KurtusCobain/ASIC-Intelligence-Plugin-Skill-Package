@@ -27,3 +27,7 @@ Before opening a pull request:
 3. Confirm new fixtures are synthetic or demonstrably sanitized.
 4. Confirm documentation clearly distinguishes evidence, inference, and uncertainty.
 5. Confirm no state-changing capability was introduced.
+## Contribution licensing
+
+By submitting a contribution, you represent that you have the right to submit it and agree that the contribution may be distributed as part of this project under the **PolyForm Shield License 1.0.0** and the repository's required notices. Do not submit material whose license is incompatible with those terms.
+
