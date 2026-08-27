@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Safety and scope
+    url: https://github.com/KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package/blob/main/docs/SAFETY.md
+    about: Read the public read-only boundary before reporting operational issues.

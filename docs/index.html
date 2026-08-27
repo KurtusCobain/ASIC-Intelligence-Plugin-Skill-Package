@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ASIC Intelligence Plugin/Skill Package: free, read-only Bitcoin mining diagnostics for Codex, Claude, and compatible Agent Skill systems.">
+  <meta name="theme-color" content="#090C0B">
+  <title>ASIC Intelligence Plugin/Skill Package — Bitcoin Mining Troubleshooter</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#top" aria-label="ASIC Intelligence Plugin/Skill Package home"><img src="assets/icon.svg" alt=""><span>ASIC Intelligence<small>Plugin / Skill Package</small></span></a>
+    <button class="menu-button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="nav" id="site-nav" aria-label="Primary navigation"><a href="#trust">Evidence</a><a href="#demos">Demos</a><a href="#install">Install</a><a href="#asici">ASIC Intelligence</a><a class="nav-cta" href="#funding">Fund it</a></nav>
+  </div>
+</header>
+<main id="main">
+  <section class="hero" id="top"><div class="hero-grid"><div>
+    <div class="eyebrow">Powered by ASIC Intelligence · Read-only</div>
+    <h1>Turn mining evidence into the next diagnostic step.</h1>
+    <p class="lead"><strong>ASIC Intelligence Plugin/Skill Package</strong> packages the <strong>Bitcoin Mining Troubleshooter</strong> for Codex, Claude Code, and compatible Agent Skill systems. Bring the logs, exports, spreadsheets, repair history, network output, power evidence, or incident notes you already have.</p>
+    <div class="hero-actions"><a class="button primary" href="#install">Install the package</a><a class="button secondary" href="#demos">Try a fleet-scale demo</a><a class="button ghost" href="https://github.com/KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package">View on GitHub</a></div>
+    <p class="hero-note">No mining-control backend. No equipment writes. No account required by the package itself.</p>
+  </div><div class="terminal" aria-label="Example diagnostic structure"><div class="terminal-bar"><span></span><span></span><span></span><b>diagnosis / rack-10</b></div><div class="terminal-body">
+    <div class="line"><span class="label">OBSERVED</span><span>14 miners disappeared in the same interval.</span></div>
+    <div class="line"><span class="label">DERIVED</span><span>Failures cluster in one shared operating area.</span></div>
+    <div class="line"><span class="label">CONFLICTS</span><span>None in the supplied files.</span></div>
+    <div class="line"><span class="label">MISSING</span><span>Historical PDU telemetry unavailable.</span></div>
+    <div class="line"><span class="label">CONFIDENCE</span><span class="green">Medium</span></div>
+    <div class="line"><span class="label">NEXT CHECK</span><span>Verify the shared upstream state before replacing individual miners.</span></div>
+    <div class="callout">The answer is allowed to say <strong>Insufficient Evidence</strong>. Uncertainty is part of the output, not something to hide.</div>
+  </div></div></div></section>
+
+  <section class="stats"><div><strong>5</strong><span>synthetic scenarios</span></div><div><strong>20K+</strong><span>miner / evidence records</span></div><div><strong>3</strong><span>package formats</span></div><div><strong>0</strong><span>equipment-control actions</span></div></section>
+
+  <section class="section" id="trust"><div class="container"><div class="section-heading"><div class="eyebrow">Diagnostic trust contract</div><h2>Evidence first. Inference second.</h2><p>The skill is designed to make the difference between an observation, a calculation, a hypothesis, an assumption, and a missing fact obvious.</p></div><div class="grid-3">
+    <article class="card"><span class="tag">PROVENANCE</span><h3>Show where the claim came from</h3><p>Important findings should trace back to supplied evidence rather than appearing as unsupported certainty.</p></article>
+    <article class="card"><span class="tag">FRESHNESS</span><h3>Old evidence is not current telemetry</h3><p>Historical or unknown-age evidence lowers confidence instead of silently acting like a live reading.</p></article>
+    <article class="card"><span class="tag">CONFLICTS</span><h3>Disagreement stays visible</h3><p>If two files disagree about a miner, rack, timestamp, or state, the package should surface the conflict rather than pick one quietly.</p></article>
+    <article class="card"><span class="tag">COMMON CAUSE</span><h3>Check shared failures first</h3><p>Rack, subnet, switch, power, cooling, firmware, and timing patterns are considered before dozens of independent hardware failures are claimed.</p></article>
+    <article class="card"><span class="tag">CONFIDENCE</span><h3>“I don't know yet” is valid</h3><p>High, Medium, Low, and Insufficient Evidence are meaningful outcomes, not decoration.</p></article>
+    <article class="card"><span class="tag">NEXT CHECK</span><h3>Reduce uncertainty safely</h3><p>The next recommendation should be the least-work read-only observation that best separates competing explanations.</p></article>
+  </div></div></section>
+
+  <section class="section alt" id="demos"><div class="container"><div class="section-heading"><div class="eyebrow">Blind evaluation</div><h2>Five fleet-scale synthetic scenarios.</h2><p>No answer keys are shipped in the public repository. The point is to see whether the diagnostic reasoning survives messy evidence.</p></div><div class="demo-grid">
+    <article class="card demo"><b>01</b><h3>Fleet restart / recovery</h3><p>5,250-miner scanner export with startup/recovery patterns, Unknowns, and explicit units.</p><a href="../demos/01-fleet-restart-recovery.csv">Open CSV</a></article>
+    <article class="card demo"><b>02</b><h3>Network segment incident</h3><p>4,800 miners across topology and reachability evidence. Unreachable is not the same as reachable zero-hash.</p><a href="../demos/02-network-segment-incident.xlsx">Open XLSX</a></article>
+    <article class="card demo"><b>03</b><h3>Power / thermal operations</h3><p>4,920 miners with container topology, feed loading, and thermal evidence designed to test competing infrastructure hypotheses.</p><a href="../demos/03-power-thermal-operations.xlsx">Open XLSX</a></article>
+    <article class="card demo"><b>04</b><h3>Repair history</h3><p>3,500 miners and 12,050 events for recurrent-fault and repair-outcome reasoning.</p><a href="../demos/04-repair-history.jsonl">Open JSONL</a></article>
+    <article class="card demo"><b>05</b><h3>Miner log corpus</h3><p>3,000 individual synthetic miner cases across healthy, startup, thermal, pool, PSU, hashboard, and other symptoms.</p><a href="../demos/05-miner-log-corpus.ndjson">Open NDJSON</a></article>
+  </div><div class="button-row"><a class="button secondary" href="../demos/DEMO-SCRIPT.md">Open blind demo script</a></div></div></section>
+
+  <section class="section" id="install"><div class="container"><div class="section-heading"><div class="eyebrow">Install</div><h2>Use the same diagnostic core in the AI environment you already have.</h2></div><div class="grid-3">
+    <article class="card install"><span class="tag">CODEX / OPENAI</span><h3>Install for Codex</h3><p>Skills-only package for supported Codex/OpenAI plugin or Agent Skill surfaces.</p><a class="button primary" href="../distributions/codex/bitcoin-mining-troubleshooter-codex-v1.1.0.zip">Download Codex ZIP</a><a href="INSTALL-CODEX.md">Installation guide →</a></article>
+    <article class="card install"><span class="tag">CLAUDE CODE</span><h3>Install for Claude</h3><p>Claude Code plugin wrapper around the same read-only diagnostic skill.</p><a class="button primary" href="../distributions/claude/bitcoin-mining-troubleshooter-claude-v1.1.0.zip">Download Claude ZIP</a><a href="INSTALL-CLAUDE.md">Installation guide →</a></article>
+    <article class="card install"><span class="tag">AGENT SKILL</span><h3>Portable Agent Skill</h3><p>Platform-neutral package for compatible Agent Skill implementations.</p><a class="button primary" href="../distributions/agent-skill/bitcoin-mining-troubleshooter-agent-skill-v1.1.0.zip">Download Agent Skill</a><a href="INSTALL-AGENT-SKILL.md">Installation guide →</a></article>
+  </div></div></section>
+
+  <section class="section alt" id="safety"><div class="container split"><div><div class="eyebrow">Hard boundary</div><h2>A troubleshooting assistant, not a remote control.</h2><p>The public package reasons over evidence supplied to the AI session. It does not add a miner-control backend or privileged remote-management path.</p></div><div class="card"><ul class="checks"><li>No reboot or reset execution</li><li>No pool/wallet changes</li><li>No firmware flashing</li><li>No voltage/frequency tuning</li><li>No PDU or breaker switching</li><li>No network reconfiguration</li><li>No arbitrary state-changing shell execution</li></ul><a href="SAFETY.md">Read safety & scope →</a></div></div></section>
+
+  <section class="section" id="asici"><div class="container"><div class="section-heading"><div class="eyebrow">The larger product</div><h2>From a useful snapshot to mining intelligence.</h2><p>The Plugin/Skill Package is the public diagnostic front door to <strong>ASIC Intelligence</strong>. It demonstrates the evidence-first philosophy without publishing the proprietary commercial implementation.</p></div><div class="flow"><div><b>1</b><span>Bring evidence you already have</span></div><div><b>2</b><span>Diagnose a real operational problem</span></div><div><b>3</b><span>See what the available evidence can and cannot establish</span></div><div><b>4</b><span>Identify where persistent site context would improve the answer</span></div><div><b>5</b><span>Explore ASIC Intelligence partnerships</span></div></div><div class="privacy-note">This repository intentionally excludes proprietary ASIC Intelligence commercial source, private evaluator answers, private recovery bundles, customer integrations, credentials, and unsanitized production data.</div></div></section>
+
+  <section class="section funding" id="funding"><div class="container"><div class="section-heading"><div class="eyebrow">Ecosystem</div><h2>Use it. Integrate it. Fund it.</h2><p>The public project and private commercial development have separate, transparent funding paths.</p></div><div class="grid-3">
+    <article class="card"><span class="tag">USE IT</span><h3>Technicians & operators</h3><p>Install it, run blind demos, and report diagnostic-quality issues with sanitized evidence.</p><a href="https://github.com/KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package">View repository →</a></article>
+    <article class="card"><span class="tag">INTEGRATE IT</span><h3>Integration Sponsor</h3><p>Firmware, API, monitoring, repair, power, networking, and infrastructure vendors can fund concrete compatibility work.</p><a href="PARTNERS.md">Integration paths →</a></article>
+    <article class="card"><span class="tag">FUND IT</span><h3>Founding Design Partner</h3><p>Mining operators and hosting companies can discuss separately scoped ASIC Intelligence product development and controlled evaluation.</p><a href="PARTNERS.md">Design partnership →</a></article>
+  </div><div class="button-row"><a class="button primary" href="FUNDING.md">Sponsor development</a><a class="button secondary" href="PARTNERS.md">Partnerships</a></div></div></section>
+
+  <section class="section alt"><div class="container"><div class="section-heading"><div class="eyebrow">Validation status</div><h2>Claims should match evidence.</h2><p>The release distinguishes documented, simulated, tested-from-real-export, and physically validated support. The public demo suite proves fleet-scale reasoning exercises; it is not a substitute for hardware acceptance testing.</p></div><div class="badge-row"><span>DOCUMENTED</span><span>SIMULATED</span><span>TESTED FROM REAL EXPORT</span><span>PHYSICALLY VALIDATED</span></div><p class="muted">See <a href="BENCHMARKS.md">benchmark methodology</a> for the public evaluation model.</p></div></section>
+
+  <section class="section" id="faq"><div class="container"><div class="section-heading"><div class="eyebrow">FAQ</div><h2>What this package is—and what it isn't.</h2></div><div class="faq"><details><summary>Does it connect directly to a mining site?</summary><p>No. v1.1.0 reasons over evidence supplied to the AI session and ships no hosted collection or mining-control backend.</p></details><details><summary>Is the public demo evidence real?</summary><p>No. The five release scenarios are synthetic. Private real-world validation material is not published here.</p></details><details><summary>Does sponsorship influence diagnoses?</summary><p>No. Public sponsorship funds public work. Commercial ASIC Intelligence development is a separate relationship. Diagnostic conclusions are expected to follow evidence either way.</p></details><details><summary>Why connect this package to ASIC Intelligence?</summary><p>The free package demonstrates the diagnostic philosophy on immediate evidence. ASIC Intelligence is the broader product direction for persistent operational intelligence; its proprietary implementation remains separate from this repository.</p></details></div></div></section>
+</main>
+<footer><div class="footer-inner"><div><img src="assets/icon.svg" alt=""><span><strong>ASIC Intelligence Plugin/Skill Package</strong><small>Bitcoin Mining Troubleshooter · v1.1.0</small></span></div><nav><a href="https://github.com/KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package">GitHub</a><a href="FUNDING.md">Funding</a><a href="PARTNERS.md">Partners</a><a href="SAFETY.md">Safety</a></nav></div></footer>
+</body>
+</html>

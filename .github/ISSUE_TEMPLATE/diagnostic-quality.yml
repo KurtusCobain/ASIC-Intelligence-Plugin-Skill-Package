@@ -1,0 +1,21 @@
+name: Diagnostic quality report
+description: Report an evidence-handling or diagnostic-quality problem using sanitized evidence.
+title: "[diagnostic] "
+labels: ["diagnostic-quality"]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not upload credentials, wallets, private tokens, private network maps, customer-identifying data, or unsanitized production logs."
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized evidence / reproducer
+      description: Describe or attach only evidence you are authorized to share publicly.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect the diagnosis to distinguish or avoid claiming?
+    validations:
+      required: true
