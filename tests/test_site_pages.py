@@ -4,6 +4,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
+GA4_MEASUREMENT_ID = "G-EGDNX281X0"
 
 VISITOR_PAGES = {
     "funding.html": "Fund ASIC Intelligence",
@@ -70,6 +71,19 @@ class VisitorFacingSitePagesTests(unittest.TestCase):
         ]
         missing = [name for name in expected_sources if not (DOCS / name).is_file()]
         self.assertEqual(missing, [], f"technical markdown source docs were removed: {missing}")
+
+    def test_all_public_html_pages_include_ga4_measurement(self):
+        pages = sorted(DOCS.glob("*.html"))
+        self.assertTrue(pages, "no public HTML pages found")
+
+        loader = f"https://www.googletagmanager.com/gtag/js?id={GA4_MEASUREMENT_ID}"
+        config = f"gtag('config', '{GA4_MEASUREMENT_ID}');"
+
+        for path in pages:
+            with self.subTest(page=path.name):
+                html = path.read_text(encoding="utf-8")
+                self.assertEqual(html.count(loader), 1, f"{path.name} must load GA4 exactly once")
+                self.assertEqual(html.count(config), 1, f"{path.name} must configure GA4 exactly once")
 
 
 if __name__ == "__main__":
