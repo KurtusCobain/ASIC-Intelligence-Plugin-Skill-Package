@@ -38,6 +38,8 @@ For stricter validation:
 claude plugin validate --strict ./bitcoin-mining-troubleshooter
 ```
 
+Validation status: the final v1.1.0 archive passes both `claude plugin validate` and `claude plugin validate --strict`. Claude Code plugin skills use the namespaced form `/bitcoin-mining-troubleshooter:diagnose`.
+
 ## Test prompt
 
 Use one of the files in `demos/` and the blind prompts in `demos/DEMO-SCRIPT.md`.
