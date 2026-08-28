@@ -14,6 +14,8 @@ VISITOR_PAGES = {
     "install-codex.html": "Install for Codex",
     "install-claude.html": "Install for Claude",
     "install-agent-skill.html": "Install the Agent Skill",
+    "privacy.html": "Privacy Policy",
+    "terms.html": "Terms of Service",
 }
 
 
@@ -49,6 +51,8 @@ class VisitorFacingSitePagesTests(unittest.TestCase):
             "install-codex.html",
             "install-claude.html",
             "install-agent-skill.html",
+            "privacy.html",
+            "terms.html",
         ]
         for route in expected:
             self.assertIn(f'href="{route}"', html)
@@ -58,6 +62,30 @@ class VisitorFacingSitePagesTests(unittest.TestCase):
             html,
         )
         self.assertEqual(visitor_markdown_links, [], f"visitor-facing markdown links remain: {visitor_markdown_links}")
+
+    def test_policy_pages_disclose_plugin_and_site_boundaries(self):
+        privacy = self._read_page("privacy.html")
+        for phrase in [
+            "Google Analytics",
+            "no ASIC Intelligence backend",
+            "intentionally provide",
+            "host AI environment",
+        ]:
+            self.assertIn(phrase, privacy)
+
+        terms = self._read_page("terms.html")
+        for phrase in [
+            "PolyForm Shield License 1.0.0",
+            "read-only diagnostic guidance",
+            "no warranty",
+            "does not authorize",
+        ]:
+            self.assertIn(phrase, terms)
+
+    def _read_page(self, filename):
+        path = DOCS / filename
+        self.assertTrue(path.is_file(), f"missing visitor-facing page: {filename}")
+        return path.read_text(encoding="utf-8")
 
     def test_technical_markdown_sources_remain_available(self):
         expected_sources = [
