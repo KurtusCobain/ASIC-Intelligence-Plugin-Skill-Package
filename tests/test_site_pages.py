@@ -82,6 +82,11 @@ class VisitorFacingSitePagesTests(unittest.TestCase):
         ]:
             self.assertIn(phrase, terms)
 
+    def test_policy_pages_are_listed_in_sitemap(self):
+        sitemap = (DOCS / "sitemap.xml").read_text(encoding="utf-8")
+        self.assertIn("/privacy.html", sitemap)
+        self.assertIn("/terms.html", sitemap)
+
     def _read_page(self, filename):
         path = DOCS / filename
         self.assertTrue(path.is_file(), f"missing visitor-facing page: {filename}")
