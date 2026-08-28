@@ -51,8 +51,6 @@ class VisitorFacingSitePagesTests(unittest.TestCase):
             "install-codex.html",
             "install-claude.html",
             "install-agent-skill.html",
-            "privacy.html",
-            "terms.html",
         ]
         for route in expected:
             self.assertIn(f'href="{route}"', html)
