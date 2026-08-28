@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "bitcoin-mining-troubleshooter",
+  "displayName": "Bitcoin Mining Troubleshooter",
+  "version": "1.1.0",
+  "description": "Evidence-backed, read-only Bitcoin ASIC troubleshooting from user-provided logs, fleet exports, spreadsheets, screenshots, and telemetry.",
+  "author": {
+    "name": "ASIC Intelligence",
+    "email": "austin@wnclogiclab.com",
+    "url": "https://github.com/KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package"
+  },
+  "homepage": "https://github.com/KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package",
+  "keywords": ["bitcoin", "asic", "mining", "troubleshooting", "diagnostics"]
+}
