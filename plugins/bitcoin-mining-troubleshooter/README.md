@@ -10,6 +10,6 @@ From the parent directory:
 claude --plugin-dir ./bitcoin-mining-troubleshooter
 ```
 
-Claude can invoke the skill automatically when the task matches its description. You can also invoke the skill manually with `/bitcoin-mining-troubleshooter`; Claude Code may display the fully namespaced form in its skill list.
+Claude can invoke the skill automatically when the task matches its description. You can also invoke the skill manually with `/bitcoin-mining-troubleshooter:diagnose`.
 
 The plugin contains no MCP server, hooks, background monitor, miner-control tool, firmware action, pool-changing action, or backend.
