@@ -152,14 +152,14 @@ class VisitorFacingSitePagesTests(unittest.TestCase):
     def test_homepage_embeds_supplied_youtube_demo(self):
         html = self._read_page("index.html")
         self.assertIn(f"youtube-nocookie.com/embed/{YOUTUBE_VIDEO_ID}", html)
-        self.assertIn("See Bitcoin Mining Troubleshooter in action", html)
+        self.assertIn("Watch a diagnosis happen", html)
 
     def test_homepage_keeps_release_and_marketplace_status_honest(self):
         html = self._read_page("index.html")
         self.assertIn(CURRENT_PUBLIC_VERSION, html)
         self.assertNotIn("v1.2.0", html)
-        self.assertIn("Claude", html)
-        self.assertRegex(html, r"Claude.{0,120}Pending approval|Pending approval.{0,120}Claude")
+        self.assertIn("CLAUDE · PENDING", html)
+        self.assertIn("Marketplace approval is pending", html)
 
     def test_customer_downloads_use_release_assets_not_raw_distribution_zips(self):
         html = self._read_page("index.html")
@@ -173,9 +173,10 @@ class VisitorFacingSitePagesTests(unittest.TestCase):
 
     def test_homepage_contains_launch_structured_data(self):
         html = self._read_page("index.html")
+        self.assertIn('type="application/ld+json"', html)
         for schema_type in ["SoftwareApplication", "SoftwareSourceCode", "VideoObject", "FAQPage"]:
-            self.assertIn(f'"@type": "{schema_type}"', html)
-        self.assertIn('"softwareVersion": "1.1.0"', html)
+            self.assertIn(schema_type, html)
+        self.assertRegex(html, r'"softwareVersion"\s*:\s*"1\.1\.0"')
         self.assertIn(YOUTUBE_VIDEO_ID, html)
 
     def test_search_landing_pages_exist_use_shell_and_are_sitemapped(self):
@@ -198,6 +199,7 @@ class VisitorFacingSitePagesTests(unittest.TestCase):
             "youtube_demo_click",
             "package_download",
             "demo_file_open",
+            "demo_prompt_copy",
             "github_repo_click",
             "desktop_interest_click",
             "partner_contact_click",
