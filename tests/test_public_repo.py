@@ -62,6 +62,8 @@ class PublicRepoContentTests(unittest.TestCase):
             'Use it. Integrate it. Fund it.',
         ]:
             self.assertIn(phrase, text)
+        self.assertIn('ASIC Intelligence Desktop is a separate product', text)
+        self.assertIn('https://chatgpt.com/plugins/plugins_6a90d9a9a63c81919cf452b0c4dcb665', text)
 
     def test_funding_separates_open_support_from_private_partnerships(self):
         text = self._read('docs/FUNDING.md')
@@ -114,13 +116,13 @@ class PublicRepoContentTests(unittest.TestCase):
         })
         self.assertEqual(sum(counts.values()), 21470)
 
-
-    def test_site_uses_pages_safe_repo_links_and_private_contact(self):
+    def test_site_uses_pages_safe_repo_links_and_measurable_release_downloads(self):
         html = self._read('docs/index.html')
         self.assertNotIn('href="../demos/', html)
         self.assertNotIn('href="../distributions/', html)
         self.assertIn('https://github.com/KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package/raw/main/demos/', html)
-        self.assertIn('https://github.com/KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package/raw/main/distributions/', html)
+        self.assertNotIn('/raw/main/distributions/', html)
+        self.assertIn('https://github.com/KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package/releases/download/v1.1.0/', html)
         self.assertIn('mailto:austin@wnclogiclab.com', html)
 
     def test_site_has_unambiguous_validation_status_and_social_metadata(self):
