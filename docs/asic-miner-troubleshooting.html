@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A practical evidence-first guide to ASIC miner troubleshooting: what to collect, what common signals mean, and how to avoid premature hardware conclusions.">
+  <link rel="canonical" href="https://kurtuscobain.github.io/ASIC-Intelligence-Plugin-Skill-Package/asic-miner-troubleshooting.html">
+  <title>ASIC Miner Troubleshooting | Bitcoin Mining Troubleshooter</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="alternate icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="header-inner"><a class="brand" href="index.html"><img src="assets/icon.svg" alt=""><span>Bitcoin Mining Troubleshooter<small>Powered by ASIC Intelligence</small></span></a><button class="menu-button" aria-expanded="false" aria-controls="site-nav">Menu</button><nav class="nav" id="site-nav" aria-label="Primary navigation"><a href="index.html#evidence">Evidence</a><a href="index.html#demo">Demo</a><a href="index.html#demos">Scenarios</a><a href="index.html#availability">Availability</a><a class="nav-cta" href="https://chatgpt.com/plugins/plugins_6a90d9a9a63c81919cf452b0c4dcb665" data-track="chatgpt_plugin_click" data-placement="seo-nav">Use in ChatGPT</a></nav></div></header>
+<main id="main"><section class="hero"><div class="content-page"><div class="eyebrow">Diagnostic guide</div><h1>ASIC Miner Troubleshooting</h1><p class="lead">Good troubleshooting starts by separating what the miner actually reported from what you think caused it. Collect enough evidence to distinguish miner hardware, pool, network, power, thermal, and shared-infrastructure problems before changing anything.</p><div class="content-stack">
+<section><h2>Evidence worth collecting</h2><ul><li>Current and historical miner/kernel logs.</li><li>Hashrate, temperature, fan, board/chip, uptime, share, reject/stale, and pool state.</li><li>Scanner or management exports with timestamps and explicit units.</li><li>Network evidence such as DNS, TCP, route, and reachability results you intentionally collected.</li><li>Power, rack, PDU, breaker, cooling, and repair-history evidence when the problem affects more than one miner.</li></ul></section>
+<section><h2>Common diagnostic mistakes</h2><p>Failed ping does not prove a miner is dead. Low total hashrate does not prove a hashboard is dead. Scanner success only proves a usable response was received; it does not prove healthy hashing, pool authorization, or accepted shares. Missing data should remain Unknown instead of being silently converted to zero.</p></section>
+<section><h2>Start with scope</h2><p>Ask whether the problem is one miner, a cohort, a rack, a network segment, a container, or an entire site symptom. Many miners changing state at the same time should trigger shared-infrastructure checks before dozens of independent hardware diagnoses.</p></section>
+<section><h2>Example investigation</h2><p>Suppose fourteen miners disappear in the same interval. If those miners share a switch, PDU, rack, or upstream network boundary, that common boundary is stronger evidence than fourteen simultaneous independent control-board failures. The next useful step is an observational check of the shared path, not immediate part replacement.</p></section>
+</div><div class="cta-panel"><h2>Analyze your own evidence</h2><p>Bitcoin Mining Troubleshooter is read-only diagnostic guidance. Attach the logs, exports, screenshots, or telemetry you want analyzed and keep control actions outside the workflow.</p><a class="button primary" href="https://chatgpt.com/plugins/plugins_6a90d9a9a63c81919cf452b0c4dcb665" data-track="chatgpt_plugin_click" data-placement="asic-troubleshooting">Use in ChatGPT</a></div></div></section></main>
+<footer><div class="footer-inner"><div><img src="assets/icon.svg" alt=""><span><strong>Bitcoin Mining Troubleshooter</strong><small>Powered by ASIC Intelligence</small></span></div><nav><a href="index.html">Home</a><a href="safety.html">Safety</a><a href="privacy.html">Privacy</a><a href="mailto:austin@wnclogiclab.com">Contact</a></nav></div></footer>
+</body>
+</html>
