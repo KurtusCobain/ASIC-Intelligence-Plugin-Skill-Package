@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="How to investigate multiple ASIC miners going offline at once without misdiagnosing dozens of independent hardware failures.">
+  <link rel="canonical" href="https://kurtuscobain.github.io/ASIC-Intelligence-Plugin-Skill-Package/multiple-miners-offline.html">
+  <title>Multiple Miners Offline | Bitcoin Mining Troubleshooter</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="alternate icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="header-inner"><a class="brand" href="index.html"><img src="assets/icon.svg" alt=""><span>Bitcoin Mining Troubleshooter<small>Powered by ASIC Intelligence</small></span></a><button class="menu-button" aria-expanded="false" aria-controls="site-nav">Menu</button><nav class="nav" id="site-nav" aria-label="Primary navigation"><a href="index.html#evidence">Evidence</a><a href="index.html#demo">Demo</a><a href="index.html#demos">Scenarios</a><a href="index.html#availability">Availability</a><a class="nav-cta" href="https://chatgpt.com/plugins/plugins_6a90d9a9a63c81919cf452b0c4dcb665" data-track="chatgpt_plugin_click" data-placement="seo-nav">Use in ChatGPT</a></nav></div></header>
+<main id="main"><section class="hero"><div class="content-page"><div class="eyebrow">Incident guide</div><h1>Multiple Miners Offline</h1><p class="lead">When many miners change state together, the timing and shared infrastructure often matter more than any one miner's error. Treat the event as an incident first and a pile of individual hardware failures second.</p><div class="content-stack">
+<section><h2>Start with blast radius</h2><p>Identify exactly which miners changed state, when they changed, and what they share: rack, switch, subnet, PDU, breaker, container, pool endpoint, firmware cohort, or cooling zone. A common boundary can explain many symptoms at once.</p></section>
+<section><h2>Do not collapse different states</h2><ul><li>Unreachable is not the same as reachable with zero hashrate.</li><li>Reachable does not prove pool authorization or accepted shares.</li><li>A scanner timeout does not prove a miner is powered off.</li><li>Missing telemetry during an incident should remain Unknown.</li></ul></section>
+<section><h2>Evidence that helps separate causes</h2><p>Compare miner timestamps with switch/network evidence, power or PDU readings, rack/container location, pool state, recent configuration or firmware changes, and unaffected miners in the same facility. An unaffected comparison group is often as informative as the failed group.</p></section>
+<section><h2>Example</h2><p>If 47 miners behind one network segment disappear within the same minute while miners on adjacent segments remain normal, that pattern supports a shared network-path hypothesis more strongly than 47 independent control-board failures. The next safe check is to verify the common network boundary and compare another segment before touching miner configuration.</p></section>
+</div><div class="cta-panel"><h2>Investigate the incident from your evidence</h2><p>Attach the scanner export, logs, screenshots, network results, or other evidence you intentionally want analyzed. The Troubleshooter can compare the supplied records without taking control of the miners.</p><a class="button primary" href="https://chatgpt.com/plugins/plugins_6a90d9a9a63c81919cf452b0c4dcb665" data-track="chatgpt_plugin_click" data-placement="multiple-offline">Use in ChatGPT</a></div></div></section></main>
+<footer><div class="footer-inner"><div><img src="assets/icon.svg" alt=""><span><strong>Bitcoin Mining Troubleshooter</strong><small>Powered by ASIC Intelligence</small></span></div><nav><a href="index.html">Home</a><a href="safety.html">Safety</a><a href="privacy.html">Privacy</a><a href="mailto:austin@wnclogiclab.com">Contact</a></nav></div></footer>
+</body>
+</html>
