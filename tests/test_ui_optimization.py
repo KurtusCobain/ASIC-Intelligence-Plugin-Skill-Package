@@ -35,7 +35,7 @@ class UiOptimizationContractTests(unittest.TestCase):
     def test_evidence_is_consolidated_into_three_groups(self):
         html = self._read("docs/index.html")
         evidence = html.split('id="evidence"', 1)[1].split('</section>', 1)[0]
-        for heading in ["Miner evidence", "Fleet & infrastructure", "Historical evidence"]:
+        for heading in ["Miner evidence", "Fleet &amp; infrastructure", "Historical evidence"]:
             self.assertIn(heading, evidence)
         self.assertEqual(evidence.count('<article class="card'), 3)
 
@@ -66,8 +66,8 @@ class UiOptimizationContractTests(unittest.TestCase):
         html = self._read("docs/index.html")
         availability = html.split('id="availability"', 1)[1].split('</section>', 1)[0]
         self.assertIn("Try it now", availability)
-        self.assertIn("Developer & local options", availability)
-        self.assertLess(availability.index("Try it now"), availability.index("Developer & local options"))
+        self.assertIn("Developer &amp; local options", availability)
+        self.assertLess(availability.index("Try it now"), availability.index("Developer &amp; local options"))
 
     def test_proof_strip_uses_read_only_instead_of_package_count(self):
         html = self._read("docs/index.html")
