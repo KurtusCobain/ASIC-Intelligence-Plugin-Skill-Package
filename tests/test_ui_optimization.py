@@ -46,12 +46,12 @@ class UiOptimizationContractTests(unittest.TestCase):
             self.assertIn(label, html)
         self.assertIn("result-key", html)
 
-    def test_trust_model_is_consolidated_into_three_cards(self):
+    def test_trust_model_is_consolidated_into_three_principles(self):
         html = self._read("docs/index.html")
         trust = html.split('id="trust"', 1)[1].split('</section>', 1)[0]
         for heading in ["Evidence integrity", "No invented certainty", "Operational reasoning"]:
             self.assertIn(heading, trust)
-        self.assertEqual(trust.count('<article class="card'), 3)
+        self.assertEqual(trust.count('class="trust-principle"'), 3)
 
     def test_demo_trials_include_guided_prompt_and_copy_action(self):
         html = self._read("docs/index.html")
