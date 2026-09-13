@@ -43,10 +43,10 @@ A strong diagnosis should distinguish:
 3. **General mining knowledge** — domain context used to interpret the evidence.
 4. **Assumptions** — stated explicitly rather than hidden inside a conclusion.
 5. **Conflicting evidence** — sources that disagree.
-6. **Missing evidence** — what is unavailable and how that limits the answer.
+6. **Missing evidence** — what remains unknown.
 7. **Freshness** — current, recent, historical, or unknown-age evidence.
-8. **Likely causes** — ranked without overstating certainty.
-9. **Confidence** — High, Medium, Low, or **Insufficient Evidence**.
+8. **Confidence** — High, Medium, Low, or Insufficient Evidence.
+9. **Shared-cause reasoning** — common rack, network, power, cooling, firmware, or timing patterns before mass independent hardware failure.
 10. **Next safe read-only check** — the observation that removes the most uncertainty with the least work.
 11. **What would change the conclusion** — evidence that would support a competing explanation.
 
@@ -58,11 +58,11 @@ The repository includes **5 fleet-scale synthetic scenarios** representing **21,
 
 | Demo | Scale | Evidence |
 | --- | ---: | --- |
-| Fleet restart / recovery | 5,250 miners | CSV scanner export |
-| Network segment incident | 4,800 miners | Multi-sheet XLSX |
-| Power / thermal operations | 4,920 miners | Multi-sheet XLSX |
+| Fleet restart / recovery | 5,250 miners | CSV |
+| Network segment incident | 4,800 miners | XLSX |
+| Power / thermal operations | 4,920 miners | XLSX |
 | Repair history | 3,500 miners / 12,050 events | JSONL |
-| Miner log corpus | 3,000 miners | NDJSON |
+| Miner log corpus | 3,000 cases | NDJSON |
 
 Start with [`demos/README.md`](demos/README.md) and [`demos/DEMO-SCRIPT.md`](demos/DEMO-SCRIPT.md).
 
@@ -86,11 +86,11 @@ The GitHub repository retains the historical name **ASIC Intelligence Plugin/Ski
 
 Read [Funding](docs/FUNDING.md) and [Partners](docs/PARTNERS.md). For private partnership discussions: **[austin@wnclogiclab.com](mailto:austin@wnclogiclab.com)**.
 
-## Safety and privacy
+## Safety and security
 
-The package is diagnostic decision support, not equipment control. Operational evidence can contain wallet addresses, pool credentials, tokens, public IPs, employee names, serial numbers, internal DNS names, and facility identifiers. Avoid posting unsanitized operational evidence to public issues.
+See [Safety and scope](docs/SAFETY.md), [Security](SECURITY.md), [FAQ](docs/FAQ.md), and [Contributing](CONTRIBUTING.md).
 
-See [Safety and scope](docs/SAFETY.md), [Security](SECURITY.md), [FAQ](docs/FAQ.md), and verify downloads with [SHA256SUMS](SHA256SUMS).
+For sensitive security reports, **do not post secrets or private operational evidence in a public issue**. Use the private reporting route documented in [SECURITY.md](SECURITY.md).
 
 ## Website
 
@@ -104,4 +104,4 @@ A newer candidate may exist in private/review workflows, but it is not a public 
 
 ## License
 
-This repository is **source-available under the PolyForm Shield License 1.0.0**. The license permits use, modification, and redistribution for permitted purposes, but does not permit using the software to provide a product that competes with this software or other products the licensor or its affiliates provide using it. See [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE) for the controlling terms. Separately developed private ASIC Intelligence products, systems, customer data, and trademarks are not licensed by this repository. For commercial licensing or partnership questions, contact **[austin@wnclogiclab.com](mailto:austin@wnclogiclab.com)**.
+This repository is **source-available** under the **PolyForm Shield License 1.0.0**. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for the controlling terms and required notice.
