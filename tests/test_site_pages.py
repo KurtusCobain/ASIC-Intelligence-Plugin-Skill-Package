@@ -5,6 +5,9 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 GA4_MEASUREMENT_ID = "G-EGDNX281X0"
+CHATGPT_PLUGIN_URL = "https://chatgpt.com/plugins/plugins_6a90d9a9a63c81919cf452b0c4dcb665"
+YOUTUBE_VIDEO_ID = "905z066Pj1M"
+CURRENT_PUBLIC_VERSION = "v1.1.0"
 
 VISITOR_PAGES = {
     "funding.html": "Fund ASIC Intelligence",
@@ -16,6 +19,13 @@ VISITOR_PAGES = {
     "install-agent-skill.html": "Install the Agent Skill",
     "privacy.html": "Privacy Policy",
     "terms.html": "Terms of Service",
+}
+
+SEARCH_LANDING_PAGES = {
+    "asic-miner-troubleshooting.html": "ASIC Miner Troubleshooting",
+    "antminer-log-analysis.html": "Antminer Log Analysis",
+    "multiple-miners-offline.html": "Multiple Miners Offline",
+    "asic-repair-history-analysis.html": "ASIC Repair History Analysis",
 }
 
 
@@ -123,6 +133,79 @@ class VisitorFacingSitePagesTests(unittest.TestCase):
         self.assertIn("window.dataLayer = window.dataLayer || [];", javascript)
         self.assertIn("gtag('js', new Date());", javascript)
         self.assertIn(f"gtag('config', GA4_MEASUREMENT_ID);", javascript)
+
+    def test_homepage_uses_troubleshooter_as_primary_product(self):
+        html = self._read_page("index.html")
+        self.assertIn("Bitcoin Mining Troubleshooter", html)
+        self.assertIn("Powered by ASIC Intelligence", html)
+        self.assertIn("Diagnose ASIC mining problems from the evidence you already have.", html)
+        self.assertIn("ASIC Intelligence Desktop is a separate product", html)
+
+    def test_homepage_makes_chatgpt_primary_conversion_path(self):
+        html = self._read_page("index.html")
+        self.assertIn(CHATGPT_PLUGIN_URL, html)
+        self.assertIn("Use in ChatGPT", html)
+        first_primary = re.search(r'<a[^>]+class="[^"]*button primary[^"]*"[^>]+href="([^"]+)"', html)
+        self.assertIsNotNone(first_primary, "homepage is missing a primary button")
+        self.assertEqual(first_primary.group(1), CHATGPT_PLUGIN_URL)
+
+    def test_homepage_embeds_supplied_youtube_demo(self):
+        html = self._read_page("index.html")
+        self.assertIn(f"youtube-nocookie.com/embed/{YOUTUBE_VIDEO_ID}", html)
+        self.assertIn("Watch a diagnosis happen", html)
+
+    def test_homepage_keeps_release_and_marketplace_status_honest(self):
+        html = self._read_page("index.html")
+        self.assertIn(CURRENT_PUBLIC_VERSION, html)
+        self.assertNotIn("v1.2.0", html)
+        self.assertIn("CLAUDE · PENDING", html)
+        self.assertIn("Marketplace approval is pending", html)
+
+    def test_customer_downloads_use_release_assets_not_raw_distribution_zips(self):
+        html = self._read_page("index.html")
+        self.assertNotRegex(html, r'raw/main/distributions/(?:codex|claude|agent-skill)/[^" ]+\.zip')
+        for filename in [
+            "bitcoin-mining-troubleshooter-codex-v1.1.0.zip",
+            "bitcoin-mining-troubleshooter-claude-v1.1.0.zip",
+            "bitcoin-mining-troubleshooter-agent-skill-v1.1.0.zip",
+        ]:
+            self.assertIn(f"releases/download/v1.1.0/{filename}", html)
+
+    def test_homepage_contains_launch_structured_data(self):
+        html = self._read_page("index.html")
+        self.assertIn('type="application/ld+json"', html)
+        for schema_type in ["SoftwareApplication", "SoftwareSourceCode", "VideoObject", "FAQPage"]:
+            self.assertIn(schema_type, html)
+        self.assertRegex(html, r'"softwareVersion"\s*:\s*"1\.1\.0"')
+        self.assertIn(YOUTUBE_VIDEO_ID, html)
+
+    def test_search_landing_pages_exist_use_shell_and_are_sitemapped(self):
+        sitemap = (DOCS / "sitemap.xml").read_text(encoding="utf-8")
+        for filename, heading in SEARCH_LANDING_PAGES.items():
+            with self.subTest(page=filename):
+                path = DOCS / filename
+                self.assertTrue(path.is_file(), f"missing search landing page: {filename}")
+                html = path.read_text(encoding="utf-8")
+                self.assertIn(heading, html)
+                self.assertIn('href="styles.css"', html)
+                self.assertIn('<script defer src="app.js"></script>', html)
+                self.assertIn(CHATGPT_PLUGIN_URL, html)
+                self.assertIn(f"/{filename}", sitemap)
+
+    def test_shared_script_declares_conversion_events(self):
+        javascript = (DOCS / "app.js").read_text(encoding="utf-8")
+        for event_name in [
+            "chatgpt_plugin_click",
+            "youtube_demo_click",
+            "package_download",
+            "demo_file_open",
+            "demo_prompt_copy",
+            "github_repo_click",
+            "desktop_interest_click",
+            "partner_contact_click",
+            "founder_profile_click",
+        ]:
+            self.assertIn(event_name, javascript)
 
 
 if __name__ == "__main__":

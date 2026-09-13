@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import csv, hashlib, json, re, sys, zipfile
+import hashlib, json, re, subprocess, sys, zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -23,13 +23,49 @@ FORBIDDEN_PHRASE_HASHES={
 }
 TEXT_SUFFIXES={'.md','.txt','.json','.jsonl','.ndjson','.yaml','.yml','.html','.css','.js','.csv','.svg','.py'}
 TOKEN_RE=re.compile(r'[a-z0-9]+')
-REPO='KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package'
+PUBLIC_VERSION='v1.1.0'
+UNRELEASED_VERSION='v1.2.0'
+
+JUNK_PATH_PARTS={
+    '__pycache__','.pytest_cache','.mypy_cache','.ruff_cache','.venv','venv','.idea','.vscode','htmlcov'
+}
+JUNK_FILENAMES={'.DS_Store','.coverage','.env'}
+JUNK_SUFFIXES={'.pyc','.pyo','.swp','.tmp','.log','.orig','.rej'}
+SECRET_PATTERNS={
+    'private-key': re.compile(r'-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----'),
+    'aws-access-key': re.compile(r'\b(?:AKIA|ASIA)[0-9A-Z]{16}\b'),
+    'github-token': re.compile(r'\bgh[pousr]_[A-Za-z0-9]{30,255}\b'),
+    'openai-api-key': re.compile(r'\bsk-[A-Za-z0-9_-]{20,}\b'),
+}
+LOCAL_PATH_PATTERNS={
+    'linux-home': re.compile(r'/home/[A-Za-z0-9._-]+/'),
+    'mac-home': re.compile(r'/Users/[A-Za-z0-9._-]+/'),
+    'windows-home': re.compile(r'[A-Za-z]:\\\\Users\\\\[^\\\\\r\n]+\\\\'),
+    'sandbox-data': re.compile(r'/' + 'mnt' + '/data/'),
+}
 
 def _digest(s:str)->str:return hashlib.sha256(s.encode()).hexdigest()
 def _read(path:Path):
     if path.suffix.lower() not in TEXT_SUFFIXES:return None
     try:return path.read_text(encoding='utf-8',errors='ignore')
     except OSError:return None
+
+def _tracked_files(root:Path):
+    """Return tracked Git files so runtime caches created by tests are ignored."""
+    try:
+        result=subprocess.run(
+            ['git','ls-files','-z'],cwd=root,check=True,capture_output=True
+        )
+        files=[]
+        for raw in result.stdout.split(b'\0'):
+            if not raw:continue
+            rel=raw.decode('utf-8','surrogateescape')
+            path=root/rel
+            if path.is_file():files.append(path)
+        if files:return files
+    except (OSError,subprocess.SubprocessError,UnicodeError):
+        pass
+    return [p for p in root.rglob('*') if '.git' not in p.parts and p.is_file()]
 
 def _phrase_hits(text:str):
     tokens=TOKEN_RE.findall(text.lower()); hits=[]
@@ -38,6 +74,26 @@ def _phrase_hits(text:str):
             phrase=' '.join(tokens[i:i+n])
             if _digest(phrase) in FORBIDDEN_PHRASE_HASHES:
                 hits.append(_digest(phrase)[:12])
+    return sorted(set(hits))
+
+def _junk_path_reason(raw_path:str):
+    normalized=raw_path.replace('\\','/').strip('/')
+    parts=[p for p in normalized.split('/') if p]
+    if any(part in JUNK_PATH_PARTS for part in parts):return 'local-artifact-directory'
+    if not parts:return None
+    name=parts[-1]
+    if name in JUNK_FILENAMES:return 'local-artifact-file'
+    if name.startswith('.env.') and name != '.env.example':return 'environment-file'
+    if any(name.endswith(suffix) for suffix in JUNK_SUFFIXES):return 'temporary-file'
+    return None
+
+def _security_hits(text:str, *, check_local_paths:bool=True):
+    hits=[]
+    for name,pattern in SECRET_PATTERNS.items():
+        if pattern.search(text):hits.append(f'secret-pattern:{name}')
+    if check_local_paths:
+        for name,pattern in LOCAL_PATH_PATTERNS.items():
+            if pattern.search(text):hits.append(f'local-absolute-path:{name}')
     return sorted(set(hits))
 
 def _zip_errors(path:Path):
@@ -50,6 +106,13 @@ def _zip_errors(path:Path):
             for m in zf.infolist():
                 low=m.filename.lower()
                 if any(x in low for x in FORBIDDEN_PATH_FRAGMENTS):errs.append(f'forbidden-zip-path:{path.name}:{m.filename}')
+                junk=_junk_path_reason(m.filename)
+                if junk:errs.append(f'forbidden-junk-path:{path.name}:{m.filename}:{junk}')
+                suffix=Path(m.filename).suffix.lower()
+                if not m.is_dir() and suffix in TEXT_SUFFIXES and m.file_size <= 2_000_000:
+                    try:text=zf.read(m).decode('utf-8','replace')
+                    except (KeyError,RuntimeError):text=''
+                    for hit in _security_hits(text):errs.append(f'{hit}:{path.name}:{m.filename}')
             license_names=[n for n in names if n.endswith('/LICENSE')]
             notice_names=[n for n in names if n.endswith('/NOTICE')]
             if len(license_names)!=1:errs.append(f'zip-license-count:{path.name}:{len(license_names)}')
@@ -112,16 +175,20 @@ def verify_repo(root:Path):
     errors=[]
     for rel in REQUIRED:
         if not (root/rel).is_file():errors.append(f'missing:{rel}')
-    for p in root.rglob('*'):
-        if '.git' in p.parts or not p.is_file():continue
-        rel=str(p.relative_to(root)).lower()
+    for p in _tracked_files(root):
+        rel_path=p.relative_to(root)
+        rel=str(rel_path).lower()
         if any(x in rel for x in FORBIDDEN_PATH_FRAGMENTS):errors.append(f'forbidden-path:{rel}')
+        junk=_junk_path_reason(str(rel_path))
+        if junk:errors.append(f'forbidden-junk-path:{rel_path}:{junk}')
         if p.suffix.lower()=='.zip':errors.extend(_zip_errors(p));continue
         text=_read(p)
         if text:
-            for hit in _phrase_hits(text):errors.append(f'forbidden-private-phrase:{p.relative_to(root)}:{hit}')
+            for hit in _phrase_hits(text):errors.append(f'forbidden-private-phrase:{rel_path}:{hit}')
+            for hit in _security_hits(text, check_local_paths=str(rel_path)!='tools/verify_public_repo.py'):
+                errors.append(f'{hit}:{rel_path}')
             old_repo='KurtusCobain/'+'bitcoin-mining-troubleshooter'
-            if old_repo in text:errors.append(f'outdated-repo-url:{p.relative_to(root)}')
+            if old_repo in text:errors.append(f'outdated-repo-url:{rel_path}')
     license_path=root/'LICENSE'
     notice_path=root/'NOTICE'
     if license_path.is_file():
@@ -136,6 +203,18 @@ def verify_repo(root:Path):
         for s in ('ASIC Intelligence Plugin/Skill Package','Bitcoin Mining Troubleshooter','Powered by ASIC Intelligence','Use it. Integrate it. Fund it.'):
             if s not in readme:errors.append(f'readme-missing:{s}')
         if '20,000' in readme and _demo_count(root)<20000:errors.append('demo-count-below-public-claim')
+        if UNRELEASED_VERSION in readme:errors.append('unreleased-version:README.md')
+    sha_path=root/'SHA256SUMS'
+    if sha_path.is_file() and UNRELEASED_VERSION in sha_path.read_text(encoding='utf-8',errors='ignore'):
+        errors.append('unreleased-version:SHA256SUMS')
+    distributions=root/'distributions'
+    if distributions.is_dir():
+        for p in distributions.rglob('*'):
+            if p.is_file() and UNRELEASED_VERSION in p.name:
+                errors.append(f'unreleased-version:{p.relative_to(root)}')
+    for page in (root/'docs').glob('*.html') if (root/'docs').is_dir() else []:
+        text=page.read_text(encoding='utf-8',errors='ignore')
+        if UNRELEASED_VERSION in text:errors.append(f'unreleased-version:{page.relative_to(root)}')
     if (root/'docs/index.html').is_file():
         html=(root/'docs/index.html').read_text(encoding='utf-8')
         for s in ('Try a fleet-scale demo','Install for Codex','Install for Claude','Founding Design Partner','Use it. Integrate it. Fund it.'):
@@ -147,7 +226,7 @@ def verify_repo(root:Path):
     pages=root/'.github/workflows/pages.yml'
     if pages.is_file():
         y=pages.read_text()
-        for s in ('actions/configure-pages@v5','actions/upload-pages-artifact@v4','actions/deploy-pages@v4','path: docs','pages: write','id-token: write'):
+        for s in ('actions/configure-pages@','actions/upload-pages-artifact@','actions/deploy-pages@','path: docs','pages: write','id-token: write','persist-credentials: false','timeout-minutes:'):
             if s not in y:errors.append(f'pages-workflow-missing:{s}')
     return sorted(set(errors))
 
@@ -158,7 +237,7 @@ def main():
     print('PUBLIC REPO: PASS')
     print('- required public files and v1.1.0 artifacts present')
     print('- distribution ZIP integrity and PolyForm Shield license checks pass')
-    print('- public/private path and phrase guards clean')
+    print('- public/private, junk, secret, local-path, and unreleased-version guards clean')
     print(f'- synthetic primary-record scale: {_demo_count(root):,}')
     print('- GitHub Pages and funding configuration present')
     return 0
