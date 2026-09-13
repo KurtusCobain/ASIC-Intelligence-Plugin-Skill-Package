@@ -6,7 +6,7 @@ ASIC Intelligence Plugin/Skill Package — Bitcoin Mining Troubleshooter is a re
 
 For a security issue that is safe to discuss publicly and contains no sensitive operational details, a GitHub issue is acceptable.
 
-For a vulnerability or report involving credentials, private infrastructure, unsanitized logs, confidential customer information, or another sensitive detail, **do not open a public GitHub issue**. Email **austin@wnclogiclab.com** with a subject beginning **`[SECURITY]`** and include only the minimum information needed to establish the issue. Redact secrets before sending whenever possible.
+For a vulnerability or report involving credentials, private infrastructure, unsanitized logs, confidential customer information, or another sensitive detail: **Do not open a public GitHub issue.** Email **austin@wnclogiclab.com** with a subject beginning **`[SECURITY]`** and include only the minimum information needed to establish the issue. Redact secrets before sending whenever possible.
 
 If a public reproduction can be created safely, reduce the case to sanitized evidence before posting it publicly.
 
