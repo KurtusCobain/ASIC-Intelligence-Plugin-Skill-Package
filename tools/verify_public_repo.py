@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import csv, hashlib, json, re, sys, zipfile
+import hashlib, json, re, subprocess, sys, zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -23,7 +23,6 @@ FORBIDDEN_PHRASE_HASHES={
 }
 TEXT_SUFFIXES={'.md','.txt','.json','.jsonl','.ndjson','.yaml','.yml','.html','.css','.js','.csv','.svg','.py'}
 TOKEN_RE=re.compile(r'[a-z0-9]+')
-REPO='KurtusCobain/ASIC-Intelligence-Plugin-Skill-Package'
 PUBLIC_VERSION='v1.1.0'
 UNRELEASED_VERSION='v1.2.0'
 
@@ -50,6 +49,23 @@ def _read(path:Path):
     if path.suffix.lower() not in TEXT_SUFFIXES:return None
     try:return path.read_text(encoding='utf-8',errors='ignore')
     except OSError:return None
+
+def _tracked_files(root:Path):
+    """Return tracked Git files so runtime caches created by tests are ignored."""
+    try:
+        result=subprocess.run(
+            ['git','ls-files','-z'],cwd=root,check=True,capture_output=True
+        )
+        files=[]
+        for raw in result.stdout.split(b'\0'):
+            if not raw:continue
+            rel=raw.decode('utf-8','surrogateescape')
+            path=root/rel
+            if path.is_file():files.append(path)
+        if files:return files
+    except (OSError,subprocess.SubprocessError,UnicodeError):
+        pass
+    return [p for p in root.rglob('*') if '.git' not in p.parts and p.is_file()]
 
 def _phrase_hits(text:str):
     tokens=TOKEN_RE.findall(text.lower()); hits=[]
@@ -159,8 +175,7 @@ def verify_repo(root:Path):
     errors=[]
     for rel in REQUIRED:
         if not (root/rel).is_file():errors.append(f'missing:{rel}')
-    for p in root.rglob('*'):
-        if '.git' in p.parts or not p.is_file():continue
+    for p in _tracked_files(root):
         rel_path=p.relative_to(root)
         rel=str(rel_path).lower()
         if any(x in rel for x in FORBIDDEN_PATH_FRAGMENTS):errors.append(f'forbidden-path:{rel}')
