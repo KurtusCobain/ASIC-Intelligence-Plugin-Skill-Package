@@ -2,11 +2,15 @@
 
 ## v1.1.0 — 2026-08-27
 
-- Published the Bitcoin Mining Troubleshooter as the public diagnostic product, powered by ASIC Intelligence.
-- Added Codex, Claude Code, and portable Agent Skill distribution packages.
-- Added five synthetic fleet-scale diagnostic scenarios and public evaluation material.
-- Added evidence-grounded diagnostic rules covering provenance, Unknown values, explicit units, shared infrastructure, confidence, and next safe checks.
-- Added safety, privacy, terms, funding, partnership, and installation documentation.
-- Added GitHub Pages website and public-package verification.
+- Changed the public package license from MIT to **PolyForm Shield License 1.0.0** and added required license notices to all distribution archives.
+- Added Codex, Claude Code, and portable Agent Skill packages.
+- Added five synthetic fleet-scale demo scenarios covering more than 20,000 miner/evidence records.
+- Added explicit Unknown-value handling, unit preservation, denominator transparency, scanner-success semantics, and sentinel-telemetry caution.
+- Preserved the strict read-only diagnostic boundary.
+- Added public-repository verification and a GitHub Pages project website.
 
-The current public package release remains **v1.1.0**. Candidate development beyond v1.1.0 is not public until its release gates are complete.
+## v1.0.1 — 2026-08-27
+
+- Hardened evidence semantics after fleet-scale regression testing.
+- Added missing-value and explicit-unit regression coverage.
+- Synchronized public safety instructions across packaged copies.
